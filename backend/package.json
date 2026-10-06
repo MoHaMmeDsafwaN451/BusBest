@@ -1,0 +1,26 @@
+{
+  "name": "busbest-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local Express API for the BUSBEST Big Data demonstration",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "test": "node --env-file-if-exists=.env --test",
+    "admin:bootstrap": "node --env-file-if-exists=.env scripts/bootstrap-admin.js",
+    "test:integration": "node --env-file-if-exists=.env scripts/integration-smoke.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^9.0.0",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^10.2.0"
+  }
+}

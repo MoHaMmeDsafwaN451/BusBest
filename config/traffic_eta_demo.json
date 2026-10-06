@@ -1,0 +1,17 @@
+{
+  "data_label": "SIMULATED DEMO GPS DATA",
+  "traffic_thresholds_kmh": {
+    "heavy_max_inclusive": 15,
+    "moderate_max_inclusive": 30,
+    "normal_max_inclusive": 60,
+    "maximum_valid_speed": 160
+  },
+  "demo_remaining_distance_km_by_route": {
+    "R01": 5.0,
+    "R02": 8.0,
+    "R03": 3.0,
+    "R04": 4.0,
+    "R05": 6.0
+  },
+  "demo_distance_disclaimer": "Hypothetical remaining distance to a demo destination. These values are configuration assumptions, not fields in GPS/HBase and not measured route distances."
+}
