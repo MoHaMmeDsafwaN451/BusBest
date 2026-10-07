@@ -1,700 +1,556 @@
 # 🚌 BUSBEST
 
-**BUSBEST** is a B.Tech project prototype for **crowdsourced bus tracking, traffic classification, and transparent ETA calculation**.
+## Crowdsourced Bus Tracking, Traffic Classification & ETA System
 
-> ⚠️ **IMPORTANT:** The current GPS records are **SIMULATED DEMO DATA**. They are not real passenger or vehicle GPS. The application implements an opt-in crowdsourced telemetry architecture for future real-device testing.
+**BUSBEST** is a B.Tech academic project combining Big Data
+technologies, real-time web development, GPS analytics, traffic
+classification, and ETA estimation.
 
----
+> ⚠️ **Important:** The current GPS records are **SIMULATED DEMO DATA**.
+> They are not real passenger or vehicle GPS.
 
-## 📌 Project Overview
+## 📌 Overview
 
-BUSBEST combines a modern full-stack web application with a local Big Data processing pipeline to demonstrate how GPS data can be collected, validated, stored, processed, analyzed, and presented as useful bus-tracking information.
+BUSBEST demonstrates: **Collect → Validate → Clean → Store → Process →
+Analyze → Estimate ETA → Visualize**.
 
-The system combines:
+  Layer            Technologies
+  ---------------- --------------------------------------
+  Frontend         React, Vite, JavaScript, CSS
+  Backend          Node.js, Express
+  Database         MongoDB, Mongoose
+  Big Data         Hadoop, HDFS, MapReduce, Hive, HBase
+  Processing       Python
+  Real-Time        WebSocket
+  Maps             Leaflet, OpenStreetMap
+  Authentication   JWT, bcrypt
 
-- React + Vite frontend
-- Node.js + Express backend
-- MongoDB application database
-- Hadoop / HDFS
-- MapReduce
-- Apache Hive
-- Apache HBase
-- Python-based traffic and ETA processing
-- WebSocket-based live updates
-- Leaflet / OpenStreetMap visualization
+## 🎯 Objectives
 
-The project is designed as an academic prototype demonstrating the integration of **Big Data technologies with real-time transportation applications**.
+-   Process and clean GPS telemetry.
+-   Store historical GPS data in HDFS.
+-   Perform batch processing with MapReduce.
+-   Perform SQL analytics with Hive.
+-   Maintain latest bus state with HBase.
+-   Calculate traffic-aware ETA with Python.
+-   Support optional crowdsourced GPS contribution.
+-   Provide real-time bus updates and role-based interfaces.
 
----
+## 🏗️ System Architecture
 
-# 🚍 Current Application
+``` mermaid
+flowchart TD
+ A[Simulated GPS Data] --> C[Validation & Cleaning]
+ B[Crowdsourced GPS] --> C
+ C --> D[HDFS]
+ D --> E[MapReduce]
+ D --> F[Hive]
+ D --> G[HBase]
+ E --> H[Historical Speed]
+ F --> I[Historical Analytics]
+ G --> J[Latest Bus State]
+ H --> K[Python ETA Engine]
+ I --> K
+ J --> K
+ K --> L[Traffic + ETA]
+ L --> M[Express API]
+ M --> N[React Dashboard]
+ M --> O[WebSocket]
+ O --> N
+```
 
-### Public Users
+## 🔄 Big Data Workflow
 
-Visitors can:
+``` mermaid
+flowchart LR
+ A[Raw GPS] --> B[Validation]
+ B --> C[Cleaning]
+ C --> D[HDFS]
+ D --> E[MapReduce]
+ D --> F[Hive]
+ D --> G[HBase]
+ E --> H[Average Speed]
+ F --> I[Analytics]
+ G --> J[Latest State]
+ H --> K[Python ETA]
+ I --> K
+ J --> K
+ K --> L[Traffic Classification]
+ L --> M[ETA]
+ M --> N[REST API]
+ N --> O[React UI]
+```
 
-- View the public bus map
-- Search buses and routes
-- View bus details
-- View route information
-- View traffic classification
-- View estimated arrival time
-- View project information
+## 🧱 Technology Stack
 
-Visitors do **not** automatically share their location.
+### Frontend
 
----
+  Technology      Purpose
+  --------------- -----------------------
+  React           User interface
+  Vite            Build and development
+  JavaScript      Application logic
+  CSS             Responsive UI
+  Leaflet         Interactive map
+  OpenStreetMap   Map tiles
 
-### 👤 Registered Users
+### Backend
 
-Registered users can:
+  Technology   Purpose
+  ------------ ----------------------
+  Node.js      JavaScript runtime
+  Express      REST API
+  MongoDB      Application database
+  Mongoose     Data modeling
+  JWT          Authentication
+  bcrypt       Password hashing
+  WebSocket    Live updates
 
-- Create an account
-- Login securely
-- Manage their profile
-- Manage owned/permitted buses
-- Select a bus for contribution
-- Give telemetry consent
-- Start an optional GPS tracking session
-- Stop sharing GPS
-- Submit bus-related issue reports
+### Big Data
 
-Location permission alone does **not** start tracking.
+  Technology   BUSBEST Usage
+  ------------ --------------------------
+  Hadoop       Big Data ecosystem
+  HDFS         Historical GPS storage
+  MapReduce    Batch speed analysis
+  Hive         SQL historical analytics
+  HBase        Latest bus-state lookup
 
----
+## 🗄️ HDFS
 
-### 🛡️ Administrators
-
-Administrators can:
-
-- Manage users
-- Manage buses
-- Manage routes
-- Manage reports
-- View analytics
-- Manage local system information
-- View aggregate tracking status
-
-Individual contributor identity and precise contributor coordinates are not exposed through the public tracking interface.
-
----
-
-# 🏗️ System Architecture
-
-```text
-                     BUSBEST DATA SOURCES
-                              │
-               ┌──────────────┴──────────────┐
-               │                             │
-       Simulated GPS Data             Crowdsourced GPS
-       Demo Dataset                  Opt-in Contributors
-               │                             │
-               └──────────────┬──────────────┘
-                              ↓
-                    DATA VALIDATION
-                    & DATA CLEANING
-                              │
-                              ↓
-                           HDFS
-                              │
-             ┌────────────────┼────────────────┐
-             │                │                │
-             ↓                ↓                ↓
-        MapReduce           Hive             HBase
-       Batch Analysis    SQL Analytics     Live State
-             │                │                │
-             ↓                ↓                ↓
-       Average Speed      Historical       Latest Bus
-         by Bus            Analysis          State
-             │                │                │
-             └────────────────┼────────────────┘
-                              ↓
-                     Python ETA Engine
-                              │
-                              ↓
-                  Traffic + ETA Analysis
-                              │
-                              ↓
-                       Express API
-                              │
-                  ┌───────────┴───────────┐
-                  ↓                       ↓
-                React                 WebSocket
-              Dashboard              Live Updates
-                  │                       │
-                  └───────────┬───────────┘
-                              ↓
-                         BUSBEST Users
-
-
-
-🧱 Technology Stack
-Frontend
-Technology	Purpose
-React	User interface
-Vite	Development and production build
-JavaScript	Application logic
-CSS	Responsive UI
-Leaflet	Interactive map
-OpenStreetMap	Map tiles
-
-
-Backend
-Technology	Purpose
-Node.js	JavaScript runtime
-Express	REST API
-MongoDB	Application data
-Mongoose	MongoDB data modeling
-JWT	Authentication
-bcrypt	Password hashing
-WebSocket	Live updates
-
-
-Big Data
-Technology	BUSBEST Usage
-Hadoop	Big Data ecosystem
-HDFS	Historical GPS storage
-MapReduce	Batch speed analysis
-Hive	SQL-based historical analytics
-HBase	Latest bus-state lookup
-
-
-Data Processing
-Technology	Purpose
-Python	Data processing and ETA engine
-CSV	GPS data format
-MapReduce	Historical speed calculation
-Hive SQL	Historical analytics
-HBase	Current bus state
-
-
-📊 Big Data Processing Pipeline
-              RAW GPS DATA
-                   │
-                   ↓
-           Data Validation
-                   │
-                   ↓
-            Data Cleaning
-                   │
-                   ↓
-                  HDFS
-                   │
-       ┌───────────┼───────────┐
-       ↓           ↓           ↓
-  MapReduce      Hive        HBase
-       │           │           │
-       ↓           ↓           ↓
-Average Speed  Historical   Latest Bus
-   Analysis     Analytics      State
-       │           │           │
-       └───────────┼───────────┘
-                   ↓
-             Python ETA
-                   │
-                   ↓
-          Traffic Classification
-                   │
-                   ↓
-             Express API
-                   │
-                   ↓
-             React Dashboard
-
-🗄️ HDFS
-HDFS is used as the historical storage layer for cleaned GPS records.
-The BUSBEST HDFS structure is:
+``` text
 /busbest/
-│
 ├── raw/
-│
 ├── cleaned/
 │   └── gps_cleaned.csv
-│
 ├── processed/
-│
 └── output/
+```
 
-The current Big Data environment runs locally in Ubuntu WSL2.
-HDFS is currently used as a local academic/demo environment and is not deployed as a cloud production service.
+HDFS currently runs locally in Ubuntu WSL2 and is an academic/demo
+environment, not a cloud production service.
 
-⚙️ MapReduce
-BUSBEST uses MapReduce for batch analysis of historical GPS data.
-The implemented analysis calculates average speed by bus.
-             HDFS GPS DATA
-                   │
-                   ↓
-                MAPPER
-                   │
-             (Bus ID, Speed)
-                   │
-                   ↓
-                SHUFFLE
-                   │
-             Group by Bus ID
-                   │
-                   ↓
-               REDUCER
-                   │
-                   ↓
-             Average Speed
-                   │
-                   ↓
-              HDFS Output
+## ⚙️ MapReduce
 
-Demonstration Results
-Bus	Average Speed
-B101	29.67 km/h
-B102	25.00 km/h
-B103	20.00 km/h
-B104	11.00 km/h
-B105	35.00 km/h
+``` mermaid
+flowchart LR
+ A[HDFS GPS] --> B[Mapper]
+ B --> C[Bus ID, Speed]
+ C --> D[Shuffle]
+ D --> E[Group by Bus]
+ E --> F[Reducer]
+ F --> G[Average Speed]
+```
 
+### Example
 
-🔍 Hive Analytics
-Apache Hive is used for SQL-based analysis of historical GPS records stored in HDFS.
-The Hive analysis includes:
-- Average speed
-- Minimum speed
-- Maximum speed
-- Number of observations
-- Route-level analysis
-Example result:
-Bus	Records	Average	Minimum	Maximum
-B101	3	29.67	28	31
-B102	2	25.00	24	26
-B103	2	20.00	19	21
-B104	2	11.00	0	22
-B105	1	35.00	35	35
+``` text
+Input:   B101 → 28, 30, 31
+Shuffle: B101 → [28, 30, 31]
+Reduce:  (28 + 30 + 31) / 3 = 29.67 km/h
+```
 
+### Results
 
-The tested Hive averages match the corresponding MapReduce results.
-⚡ HBase
-HBase is used to maintain the latest bus state for fast lookup.
-The project uses the table:
-busbest_bus_state
+  Bus      Average Speed
+  ------ ---------------
+  B101        29.67 km/h
+  B102        25.00 km/h
+  B103        20.00 km/h
+  B104        11.00 km/h
+  B105        35.00 km/h
 
-Logical structure:
-Row Key: bus_id
+## 🔍 Hive Analytics
 
-info:
-    route_id
+Hive performs SQL-based analysis of historical GPS records stored in
+HDFS.
 
-location:
-    latitude
-    longitude
+### Example Query
 
-telemetry:
-    speed
-    timestamp
+``` sql
+SELECT bus_id,
+       COUNT(*) AS records,
+       AVG(speed) AS average_speed,
+       MIN(speed) AS minimum_speed,
+       MAX(speed) AS maximum_speed
+FROM busbest_gps_records
+GROUP BY bus_id
+ORDER BY bus_id;
+```
 
-HBase Role
-GPS Observation
-       │
-       ↓
-Validation
-       │
-       ↓
-Aggregation
-       │
-       ↓
-     HBase
-       │
-       ↓
-Latest Bus State
-       │
-       ↓
-Live Map / API
+### Results
 
-HDFS and HBase have different responsibilities:
-- HDFS → historical GPS data
-- HBase → latest/current bus state
-📡 Crowdsourced GPS Architecture
-Registered users can optionally contribute GPS telemetry while traveling on a selected bus.
-Passenger 1 ── GPS ──┐
-Passenger 2 ── GPS ──┤
-Passenger 3 ── GPS ──┤
-                      ↓
-              Backend Validation
-                      ↓
-               Outlier Filtering
-                      ↓
-             Accuracy + Recency
-                  Weighting
-                      ↓
-                 Aggregation
-                 /         \
-                /           \
-               ↓             ↓
-            HBase          HDFS
-        Latest State    Historical Data
-               │
-               ↓
-           WebSocket
-               │
-               ↓
-          Public Map
+  Bus      Records   Average   Minimum   Maximum
+  ------ --------- --------- --------- ---------
+  B101           3     29.67        28        31
+  B102           2     25.00        24        26
+  B103           2     20.00        19        21
+  B104           2     11.00         0        22
+  B105           1     35.00        35        35
 
-Multiple observations can contribute to a representative bus state.
-The public interface does not expose individual contributor identity or precise individual contributor coordinates.
-🔐 Privacy and Consent
-BUSBEST uses an explicit opt-in tracking model.
-Tracking flow
-User Login
-    ↓
-Select Bus
-    ↓
-Start Sharing
-    ↓
-Location Permission
-    ↓
-GPS Telemetry
-    ↓
-Validation & Aggregation
-    ↓
-Stop Sharing
+**Validation:** Tested Hive averages match the corresponding MapReduce
+results.
 
-Important principles:
-- Location permission does not automatically start tracking.
-- The user explicitly starts sharing.
-- The user can stop sharing.
-- Public users are not automatically tracked.
-- Individual contributor identity is not displayed publicly.
-- Individual contributor coordinates are not displayed publicly.
-- Aggregated bus state is used for public visualization.
-🚦 Traffic Classification
-BUSBEST compares current bus movement with historical speed information.
-Current Speed
-      +
-Historical Speed
-      +
-Traffic Rules
-      ↓
-Traffic Classification
-      ↓
-Normal / Moderate / Heavy
+## ⚡ HBase
 
-The traffic classification is then used as an input to the ETA calculation pipeline.
-🕐 ETA Calculation
-The Python ETA engine combines:
-- Current bus state
-- Historical speed
-- Traffic classification
-- Estimated distance
-Current Bus State
-       +
-Historical Speed
-       +
-Traffic Condition
-       +
-Estimated Distance
-       ↓
-Traffic-aware ETA
+HBase maintains the latest bus state for fast lookup.
 
-The current demonstration uses simulated/demo GPS records and estimated distances.
-ETA distances are not currently verified road-network distances.
+**Table:** `busbest_bus_state`
 
-📈 Demonstration Analytics
-The current cleaned GPS dataset contains:
-Raw records       : 17
-Valid records     : 10
-Invalid records   : 6
-Duplicate records : 1
+  Component   Field
+  ----------- -------------------------
+  Row Key     `bus_id`
+  info        `route_id`
+  location    `latitude`, `longitude`
+  telemetry   `speed`, `timestamp`
 
-Historical average speed:
-B101 → 29.67 km/h
-B102 → 25.00 km/h
-B103 → 20.00 km/h
-B104 → 11.00 km/h
-B105 → 35.00 km/h
+  Storage   Purpose
+  --------- --------------------------
+  HDFS      Historical GPS data
+  HBase     Latest/current bus state
 
-These values were obtained through the tested Big Data analytics pipeline.
-🗺️ Map Visualization
-Leaflet and OpenStreetMap tiles are used to display bus coordinates.
-The application provides:
-- Interactive bus map
-- Bus markers
-- Bus details
-- Route information
-- Search
-- Traffic status
-- ETA information
-The current five bus coordinates shown on the map are simulated demonstration locations.
+``` mermaid
+flowchart TD
+ A[GPS Observation] --> B[Validation]
+ B --> C[Aggregation]
+ C --> D[HBase]
+ D --> E[Latest Bus State]
+ E --> F[Express API]
+ F --> G[Live Map]
+```
 
-🔄 Real-Time Updates
-BUSBEST uses WebSocket communication for live aggregate bus-state updates.
-GPS Contributors
-       ↓
-Validation
-       ↓
-Aggregation
-       ↓
-HBase
-       ↓
-WebSocket
-       ↓
-React Live Map
+## 📡 Crowdsourced GPS
 
-This avoids repeatedly loading the complete bus dataset when an aggregate bus state changes.
-👥 User Roles
-Visitor
-- Public map
-- Bus search
-- Route search
-- Bus details
-- ETA
-- Traffic information
-- Project information
-USER
-- Registration
-- Login
-- Profile
-- Bus management
-- Telemetry consent
-- GPS contribution
-- Issue reporting
-ADMIN
-- User management
-- Bus management
-- Route management
-- Report management
-- Analytics
-- System management
-- Aggregate tracking monitoring
-🛣️ Route Management
-Routes support:
-- Starting point
-- Destination
-- Multiple ordered stops
-- Stop reordering
-- Route editing
-- Route archiving
-Assigned routes are protected from unsafe deletion. The application provides guidance when a route is already assigned to buses.
-📱 Responsive Interface
-The application is designed for:
-- Desktop
-- Laptop
-- Tablet
-- Smartphone
-Supported interface features include:
-- Light theme
-- Dark theme
-- System theme
-- English
-- Malayalam
-- Hindi
-🧪 Validation & Testing
-The project has been tested across the backend, frontend, Python processing, and Big Data pipeline.
-Recorded final verification includes:
-Backend tests          : 7 passed
-API integration checks : 25 passed
-Frontend build         : Passed
-Python tests Windows   : 12 passed
-Python tests Ubuntu    : 12 passed
+``` mermaid
+flowchart TD
+ A[Passenger 1] --> D[Validation]
+ B[Passenger 2] --> D
+ C[Passenger 3] --> D
+ D --> E[Outlier Filtering]
+ E --> F[Accuracy + Recency Weighting]
+ F --> G[Aggregation]
+ G --> H[HBase]
+ G --> I[HDFS]
+ H --> J[WebSocket]
+ J --> K[Public Map]
+```
 
-The Big Data regression also verified:
-HDFS cleaned records : 10
+Users explicitly start sharing and can stop sharing. Individual
+contributor identity and precise individual coordinates are not exposed
+publicly.
 
-MapReduce averages:
-B101 → 29.67
-B102 → 25.00
-B103 → 20.00
-B104 → 11.00
-B105 → 35.00
+## 🔐 Privacy & Consent
 
-Hive averages matched the MapReduce results.
+``` mermaid
+flowchart TD
+ A[User Login] --> B[Select Bus]
+ B --> C[Start Sharing]
+ C --> D[Location Permission]
+ D --> E[GPS Telemetry]
+ E --> F[Validation & Aggregation]
+ F --> G[Stop Sharing]
+```
 
-For complete testing details, see:
-- [Testing Documentation](docs/testing.md)
-- [Architecture](docs/architecture.md)
-- [API Documentation](docs/api.md)
-- [Deployment](docs/deployment.md)
-📁 Project Structure
+-   Permission does not automatically start tracking.
+-   Users explicitly start sharing.
+-   Users can stop sharing.
+-   Visitors are not automatically tracked.
+-   Public users see aggregated bus state.
+
+## 🚦 Traffic Classification
+
+``` mermaid
+flowchart LR
+ A[Current Speed] --> D[Traffic Classification]
+ B[Historical Speed] --> D
+ C[Traffic Rules] --> D
+ D --> E[Normal]
+ D --> F[Moderate]
+ D --> G[Heavy]
+```
+
+## 🕐 ETA Calculation
+
+``` mermaid
+flowchart TD
+ A[Current Bus State] --> E[Python ETA Engine]
+ B[Historical Speed] --> E
+ C[Traffic Condition] --> E
+ D[Estimated Distance] --> E
+ E --> F[Traffic-Aware ETA]
+```
+
+> ⚠️ ETA distances are demonstration estimates and are not verified
+> road-network distances.
+
+## 📊 Demonstration Data Analysis
+
+  Metric                Result
+  ------------------- --------
+  Raw records               17
+  Valid records             10
+  Invalid records            6
+  Duplicate records          1
+
+### Average Speed Visualization
+
+``` text
+B105  ████████████████████████████████ 35.00
+B101  ███████████████████████████      29.67
+B102  ███████████████████████          25.00
+B103  ███████████████████              20.00
+B104  ███████████                      11.00
+                    km/h
+```
+
+## 🗺️ Map Visualization
+
+Leaflet and OpenStreetMap provide the interactive map, bus markers, bus
+details, route information, search, traffic status, and ETA. The current
+five bus coordinates are simulated demonstration locations.
+
+## 🔄 Real-Time Updates
+
+``` mermaid
+flowchart LR
+ A[GPS Contributors] --> B[Validation]
+ B --> C[Aggregation]
+ C --> D[HBase]
+ D --> E[WebSocket]
+ E --> F[React Live Map]
+```
+
+## 👥 User Roles
+
+### Visitor
+
+  Feature                  Available
+  ------------------------ -----------
+  Public map               ✅
+  Bus/route search         ✅
+  Bus details              ✅
+  ETA                      ✅
+  Traffic information      ✅
+  Automatic GPS tracking   ❌
+
+### Registered User
+
+  Feature              Available
+  -------------------- -----------
+  Registration/Login   ✅
+  Profile              ✅
+  Bus management       ✅
+  Telemetry consent    ✅
+  GPS contribution     ✅
+  Issue reporting      ✅
+
+### Administrator
+
+  Feature                         Available
+  ------------------------------- -----------
+  User management                 ✅
+  Bus management                  ✅
+  Route management                ✅
+  Report management               ✅
+  Analytics                       ✅
+  Aggregate tracking monitoring   ✅
+
+## 🧪 Testing & Validation
+
+  Component                            Result
+  --------------------------- ---------------
+  Backend tests                  **7 passed**
+  API integration checks        **25 passed**
+  Frontend production build        **Passed**
+  Python tests --- Windows      **12 passed**
+  Python tests --- Ubuntu       **12 passed**
+  HDFS cleaned records                 **10**
+  Hive vs MapReduce               **Matched**
+
+## 📁 Project Structure
+
+``` text
 BUSBEST/
-│
 ├── backend/
-│   ├── src/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── middleware/
-│   │   ├── telemetry/
-│   │   └── server.js
-│   │
-│   └── scripts/
-│
 ├── frontend/
-│   └── src/
-│       ├── components/
-│       ├── pages/
-│       ├── services/
-│       └── ...
-│
 ├── data/
-│   ├── raw/
-│   ├── cleaned/
-│   └── sample/
-│
 ├── scripts/
-│   ├── clean_gps.py
-│   ├── load_latest_hbase.py
-│   └── ...
-│
 ├── src/
-│   ├── cleaning.py
-│   ├── traffic_eta.py
-│   └── mapreduce/
-│
 ├── queries/
-│   └── hive_analytics.sql
-│
 ├── config/
-│
 ├── docs/
-│   ├── architecture.md
-│   ├── api.md
-│   ├── deployment.md
-│   ├── testing.md
-│   ├── hive-analytics.md
-│   ├── hbase-setup.md
-│   └── traffic-eta.md
-│
 ├── tests/
-│
 ├── README.md
 └── .gitignore
+```
 
-▶️ Run Locally
-Prerequisites
-- Node.js 18+
-- MongoDB
-- Ubuntu WSL2
-- Hadoop / HDFS
-- HBase
-- Python
-- Already configured BUSBEST environment
-1. Configure Backend
-Copy:
-backend/.env.example
+## ▶️ Run Locally
 
-to:
-backend/.env
+### Prerequisites
 
-Set a private:
-JWT_SECRET
+-   Node.js 18+
+-   MongoDB
+-   Ubuntu WSL2
+-   Hadoop / HDFS
+-   HBase
+-   Python
 
-Use at least 32 random bytes.
-2. Configure Frontend
-Copy:
-frontend/.env.example
+### Configure
 
-to:
-frontend/.env
+``` powershell
+Copy-Item backend/.env.example backend/.env
+Copy-Item frontend/.env.example frontend/.env
+```
 
 Set:
+
+``` text
+JWT_SECRET=<32+ random bytes>
 VITE_API_URL=http://127.0.0.1:3001/api
+```
 
-3. Start MongoDB
+### Start MongoDB
+
+``` powershell
 wsl.exe -d Ubuntu --user root --exec systemctl start mongod
+```
 
-4. Start Hadoop / HDFS
-From Ubuntu WSL:
+### Start Hadoop/HDFS
+
+``` bash
 source ~/.bashrc
-
 hdfs --daemon start namenode
 hdfs --daemon start datanode
+jps
+```
 
-5. Start HBase
+### Start HBase
+
+``` bash
 hbase-daemon.sh autostart zookeeper
 hbase-daemon.sh autostart master
 hbase-daemon.sh autostart regionserver
+```
 
-6. Start Backend
-From the BUSBEST project root:
+### Start Backend
+
+``` powershell
 npm.cmd --prefix backend start
+```
 
-The API normally runs on:
-http://127.0.0.1:3001
+API: `http://127.0.0.1:3001`
 
-7. Start Frontend
-Open another terminal:
+### Start Frontend
+
+``` powershell
 npm.cmd --prefix frontend run dev
+```
 
-The Vite development server normally runs on:
-http://localhost:5173
+Frontend: `http://localhost:5173`
 
-👑 Bootstrap the First Admin
-Create the first administrator only when required.
-Temporarily set:
-BOOTSTRAP_ADMIN_NAME
-BOOTSTRAP_ADMIN_EMAIL
-BOOTSTRAP_ADMIN_PASSWORD
+## 🧹 GPS Cleaning
 
-in the ignored:
-backend/.env
-
-Then run:
-npm.cmd --prefix backend run admin:bootstrap
-
-After successful creation, remove the bootstrap password from the environment file.
-🧹 GPS Data Cleaning
-The original Python cleaner can be executed using:
+``` bash
 python scripts/clean_gps.py
-
-Run Python tests with:
 python -m unittest discover -s tests -v
+```
 
-⚠️ Current Limitations
-The current prototype has the following limitations:
-1. The main GPS dataset is simulated demonstration data.
-2. The five displayed bus locations are simulated.
-3. Real passenger GPS telemetry has not yet been fully verified end-to-end on physical devices.
-4. Mobile background location behavior depends on the browser and operating system.
-5. ETA distances are demonstration estimates and are not verified road-network distances.
-6. Hadoop, HDFS, Hive, and HBase run locally in Ubuntu WSL2.
-7. The Big Data environment is a local academic/demo environment, not a cloud production cluster.
-8. Final cross-device visual testing is still required for some responsive and mobile behaviors.
-These limitations are intentionally documented so that simulated data is not presented as real-world transportation telemetry.
-🔮 Future Scope
-Future improvements could include:
-- Real-world GPS deployment
-- Android / mobile application
-- Progressive Web App (PWA)
-- Road-network routing
-- Real road-distance ETA
-- Machine-learning-based ETA prediction
-- Larger real-world GPS datasets
-- Distributed Hadoop cluster
-- Cloud deployment
-- Advanced traffic prediction
-- Passenger demand prediction
-- Route optimization
-- Advanced anomaly detection
-- Historical route intelligence
-🎓 Academic Significance
-BUSBEST demonstrates a complete Big Data workflow:
-Data Collection
-      ↓
-Data Cleaning
-      ↓
-HDFS Storage
-      ↓
-MapReduce Processing
-      ↓
-Hive Analytics
-      ↓
-HBase Live State
-      ↓
-Traffic Classification
-      ↓
-ETA Calculation
-      ↓
-REST API
-      ↓
-Real-Time Visualization
+## ⚠️ Current Limitations
 
-The project demonstrates how Big Data technologies can be integrated with a modern full-stack application to address a practical public transportation problem.
-👨‍💻 Project
-BUSBEST — Crowdsourced Bus Tracking, Traffic Classification & ETA System
-B.Tech Academic Project
-Core Technologies
-Hadoop HDFS MapReduce Hive HBase MongoDB Python Node.js Express React Vite WebSocket Leaflet OpenStreetMap                         
+1.  The main GPS dataset is simulated demonstration data.
+2.  The five displayed bus locations are simulated.
+3.  Real passenger GPS telemetry has not yet been fully verified
+    end-to-end on physical devices.
+4.  Mobile background location depends on browser/OS behavior.
+5.  ETA distances are demonstration estimates.
+6.  Hadoop, HDFS, Hive, and HBase run locally in Ubuntu WSL2.
+7.  The Big Data environment is a local academic/demo environment, not a
+    cloud production cluster.
+
+## 🔮 Future Scope
+
+-   Real-world GPS deployment
+-   Android/mobile application
+-   Progressive Web App
+-   Road-network routing
+-   Real road-distance ETA
+-   Machine-learning ETA prediction
+-   Larger real-world GPS datasets
+-   Distributed Hadoop cluster
+-   Cloud deployment
+-   Advanced traffic prediction
+-   Passenger demand prediction
+-   Route optimization
+-   Advanced anomaly detection
+
+## 🎓 Academic Significance
+
+``` mermaid
+flowchart LR
+ A[Data Collection] --> B[Data Cleaning]
+ B --> C[HDFS Storage]
+ C --> D[MapReduce]
+ C --> E[Hive Analytics]
+ C --> F[HBase Live State]
+ D --> G[Traffic Classification]
+ E --> G
+ F --> G
+ G --> H[ETA Calculation]
+ H --> I[REST API]
+ I --> J[Real-Time Visualization]
+```
+
+## 📚 Big Data Technology Summary
+
+  -----------------------------------------------------------------------
+  Technology              Question                BUSBEST Role
+  ----------------------- ----------------------- -----------------------
+  **HDFS**                Where is historical     Historical GPS storage
+                          data stored?            
+
+  **MapReduce**           How is batch data       Average speed
+                          processed?              
+
+  **Hive**                How can historical data SQL analytics
+                          be queried?             
+
+  **HBase**               How can latest data be  Live bus state
+                          retrieved quickly?      
+
+  **Python**              How is intelligence     Traffic + ETA
+                          calculated?             
+
+  **MongoDB**             How are application     Users, buses, routes,
+                          records stored?         reports
+
+  **WebSocket**           How are live updates    Real-time UI
+                          delivered?              
+  -----------------------------------------------------------------------
+
+## 🏆 Key Results
+
+  Area                Result
+  ------------------- -----------------------------------
+  GPS dataset         **17 input → 10 cleaned records**
+  MapReduce           **5 bus average-speed results**
+  Hive                **Historical analytics executed**
+  HBase               **Latest bus state maintained**
+  Hive vs MapReduce   **Results matched**
+  Backend testing     **7 passed**
+  API integration     **25 checks passed**
+  Python Windows      **12 passed**
+  Python Ubuntu       **12 passed**
+  Frontend build      **Passed**
+
+------------------------------------------------------------------------
+
+## 👨‍💻 Project
+
+**BUSBEST --- Crowdsourced Bus Tracking, Traffic Classification & ETA
+System**
+
+**B.Tech Academic Project**
+
+`Hadoop` · `HDFS` · `MapReduce` · `Hive` · `HBase` · `MongoDB` ·
+`Python` · `Node.js` · `Express` · `React` · `Vite` · `WebSocket` ·
+`Leaflet` · `OpenStreetMap`
